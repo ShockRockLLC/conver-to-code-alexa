@@ -1,0 +1,109 @@
+/* eslint-disable  func-names */
+/* eslint-disable  dot-notation */
+/* eslint-disable  new-cap */
+/* eslint quote-props: ['error', 'consistent']*/
+/**
+ * This sample demonstrates a simple skill built with the Amazon Alexa Skills
+ * nodejs skill development kit.
+ * This sample supports en-US lauguage.
+ * The Intent Schema, Custom Slots and Sample Utterances for this skill, as well
+ * as testing instructions are located at https://github.com/alexa/skill-sample-nodejs-trivia
+ **/
+
+'use strict';
+
+const Alexa = require('alexa-sdk');
+
+const APP_ID = "THIS MUST BE REPLACED";  // TODO we must put your id here
+
+function isAnswerSlotValid(intent) {
+    const answerSlotFilled = intent && intent.slots && intent.slots.GuessIntentSlot && intent.slots.GuessIntentSlot.value;
+    const answerSlotIsInt = answerSlotFilled && !isNaN(parseInt(intent.slots.GuessIntentSlot.value, 10));
+    return answerSlotIsInt
+        && parseInt(intent.slots.GuessIntentSlot.value, 10) < 101
+        && parseInt(intent.slots.GuessIntentSlot.value, 10) > 0;
+}
+
+function handleUserGuess(userGaveUp) {
+    const answerSlotValid = isAnswerSlotValid(this.event.request.intent);
+    let speechOutput = '';
+    let speechOutputAnalysis = '';
+
+    if (answerSlotValid) {
+        var number = parseInt(this.event.request.intent.slots.GuessIntentSlot.value, 10);
+        var target = this.attributes.target;
+
+        if( number < target ) {
+            speechOutput = "Good guess but my number is higher.";
+            this.response.speak(speechOutput).listen(speechOutput);
+            this.emit(':responseReady');
+        }
+        else if( number > target ) {
+            speechOutput = "Good guess but my number is lower.";
+            this.response.speak(speechOutput).listen(speechOutput);
+            this.emit(':responseReady');
+        }
+        else {
+            speechOutput = "Way to go! You figured it out! Do you want to play again?";
+            this.response.speak(speechOutput).listen(speechOutput);
+            this.emit(':responseReady');
+        }
+    } else {
+        speechOutput = "Try saying a number between 1 and 100";
+        this.response.speak(speechOutput).listen(speechOutput);
+        this.emit(':responseReady');
+    }
+}
+
+function startGame(newGame) {
+    Object.assign(this.attributes, {
+        'target': 1 + Math.floor(Math.random() * 971) % 100
+    });
+
+    this.response.speak("Welcome to Number Guess. I've picked a number between 1 and 100. Try to guess it. I'll help you by telling you if it is lower or higher.").listen("Guess a number between 1 and 100");
+    this.emit(':responseReady');
+};
+
+const handlers = {
+    'GuessIntent': function () {
+        handleUserGuess.call(this, false);
+    },
+    'LaunchRequest': function () {
+        startGame.call(this);
+    },
+    'AMAZON.StartOverIntent': function () {
+        startGame.call(this);
+    },
+    'AMAZON.RepeatIntent': function () {
+        this.emit(':ask', "Need help?", "Need more time?");
+    },
+    'AMAZON.HelpIntent': function () {
+        this.emit(':ask', "Need help?", "Need more time?");
+    },
+    'AMAZON.StopIntent': function () {
+        this.response.speak("Ok, let\'s play again soon.");
+        this.emit(':responseReady');
+    },
+    'AMAZON.CancelIntent': function () {
+        this.response.speak("Ok, let\'s play again soon.");
+        this.emit(':responseReady');
+    },
+    'Unhandled': function () {
+        const speechOutput = "Say a number between 1 and 100";
+        this.response.speak(speechOutput).listen(speechOutput);
+        this.emit(':responseReady');
+    },
+    'SessionEndedRequest': function () {
+        console.log(`Session ended in trivia state: ${this.event.request.reason}`);
+    },
+};
+
+exports.handler = function (event, context) {
+    const alexa = Alexa.handler(event, context);
+    alexa.appId = APP_ID;
+
+    // To enable string internationalization (i18n) features, set a resources object.
+    //alexa.resources = languageString;
+    alexa.registerHandlers(handlers);
+    alexa.execute();
+};

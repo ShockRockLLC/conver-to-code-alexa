@@ -1,0 +1,69 @@
+
+
+=============================================
+
+
+>>>> Create new Skill
+
+call it Number Guess
+
+
+>>>> Add Slot Type
+
+GuessIntentSlot
+
+
+>>>> Add Slot Types
+
+Amazon.Number
+
+
+>>>> Add Intent
+
+GuessIntent
+
+
+>>>> Intent Slots
+
+GuessIntentSlot (this is the name)
+GuessIntentSlot (choose it from the list)
+
+
+>>>> Sample utterances
+
+{GuessIntentSlot}
+
+
+=============================================
+
+
+>>>> Add Lambda function
+
+Blueprint >> search for alexa-skill-kit-sdk-triviaskill
+myGuessFunction
+
+
+>>>> Add Code
+
+Paste from guess-code.txt to index.js
+Replace TODO with Alexa skill
+
+
+>>>> Add Trigger under Designer
+
+Alexa Skills Kit
+Copy ID from Skill page by clicking
+Click Add
+Click Save
+
+
+=============================================
+
+
+>>>> Add Endpoint
+
+Copy from lambda page
+Save Endpoints
+
+
+=============================================

@@ -1,6 +1,11 @@
 =============================================
 
 
+>>>> Create new Skill
+
+call it Be Nice
+
+
 >>>> Add Intent
 
 ResponseIntent
