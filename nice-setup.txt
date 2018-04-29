@@ -1,0 +1,98 @@
+=============================================
+
+
+>>>> Add Intent
+
+ResponseIntent
+
+
+>>>> Sample utterances
+
+another
+more
+
+
+=============================================
+
+
+>>>> Add Slot Type
+
+ThanksIntentSlot
+
+
+>>>> Add Slot Types
+
+nice
+sweet
+helpful
+
+
+>>>> Add Intent
+
+ThanksIntent
+
+
+>>>> Intent Slots
+
+ThanksIntentSlot (this is the name)
+ThanksIntentSlot (choose it from the list)
+
+
+>>>> Sample utterances
+
+that was {ThanksIntentSlot}
+thanks
+
+
+=============================================
+
+
+>>>> Add New Role
+
+AWS service > Lambda
+
+
+>>>> Attach policy
+
+AWSLambdaFullAccess
+AmazonDynamoDBFullAccess
+
+
+>>>> Create Role
+
+MyAlexaRole
+
+
+=============================================
+
+
+>>>> Add Lambda function
+
+Blueprint >> search for alexa-skill-kit-sdk-factskill
+myBeNiceFunction
+
+
+>>>> Add Code
+
+Paste from nice-code.txt to index.js
+Replace TODO with Alexa skill
+
+
+>>>> Add Trigger under Designer
+
+Alexa Skills Kit
+Copy ID from Skill page by clicking
+Click Add
+Click Save
+
+
+=============================================
+
+
+>>>> Add Endpoint
+
+Copy from lambda page
+Save Endpoints
+
+
+=============================================
